@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <div class="card my-4">
+    <h5 class="card-header"></h5>
+    <div class="card-body">
+  <article class="media content-section">
+    <img class="d-flex mr-3 rounded-circle" width="100" height="100" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+        <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+        {% if post.author == current_user %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
+            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+          </div>
+        {% endif %}
+      </div>
+      <div class="col-lg-8">
+        <!--post collumn-->
+      <h2 class="article-title">{{ post.title }}</h2>
+       {% if post.post_file %}
+            <img class="img-fluid rounded" width="900" height="300" src="{{ url_for('static', filename='post_pics/' + post.post_file) }}">
+        {% endif %}
+      <p class="article-content lead">{{ post.content }}</p>
+      <div class="card my-4">
+          <h5 class="card-header">Leave a Comment:</h5>
+          <div class="card-body">
+      <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+       <div class="form-group">
+                    {{ form.comment.label(class="form-control-label") }}
+                    {% if form.comment.errors %}
+                        {{ form.comment(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.comment.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.comment(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                {{ form.submit1(class="btn btn-primary") }}
+                <i class="fas fa-comments"><p>({{commentsno}})</p></i>
+            </div>
+        </form>
+        <form method="POST" action="">
+        {% if reactis == 0 %}
+          <div class="form-group">
+              {{ form2.submit2(class="btn btn-primary mb-2") }}
+              <i class="fas fa-heart"><p>({{ postreactis }})</p></i>
+          </div>
+        {% endif %}
+        </form>
+        <form method="POST" action="">
+        {% if reactis != 0 %}
+          <div class="form-group">
+              {{ form3.submit3(class="btn btn-outline-info mb-2") }}
+              <i class="fas fa-thumbs-down"><p>({{ postreactis }})</p></i>
+          </div>
+        {% endif %}
+        </form>
+      </div></div>
+        {{ share.load() }}
+        {{ share.create(title="Share with:  ")}}
+      <!--comment-->
+      <div class="card my-4">
+          <h5 class="card-header">Comment</h5>
+          <div class="card-body">
+    {% for comment in comments %}
+        <article class="media content-section">
+          <img class="d-flex mr-3 rounded-circle" width="50" height="50" src="{{ url_for('static', filename='profile_pics/' + comment.author1.image_file) }}">
+          <!--h4 class="mb-3"> {{ comment.author1.username[:5] }}</h4-->
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ comment.author1.username }}</a>
+              <small class="text-muted">{{ comment.date_comment.strftime('%Y-%m-%d, %H:%M:%S') }}</small>
+            </div>
+            <p class="article-content">{{ comment.comment_content }}</p>
+          </div>
+        </article>
+    {% endfor %}
+  </div></div>
+      <!--comment-->
+           </div>
+  </article>
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
+            <input class="btn btn-danger" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div></div>
+{% endblock content %}

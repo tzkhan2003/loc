@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<form  method="POST" action="" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group"><legend class="border-bottom mb-4">Add product</legend>
+    <div class="form-row">
+      <div class="col-md-6 form-group">
+        {{ form.name.label }}
+        {{ form.name(class="form-control", id="name", placeholder="Product Name") }}
+        <!--input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+        <div class="validate"></div-->
+      </div>
+    </div>
+    <div class="form-group">
+        {{ form.price.label }}
+      {{ form.price(class="form-control" ,id="subject" ,placeholder="Price") }}
+      <!--input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+      <div class="validate"></div-->
+    </div>
+    <div class="form-group">
+        {{ form.discount.label }}
+      {{ form.discount(class="form-control" ,placeholder="Discount") }}
+    </div>
+    <div class="form-group">
+        {{ form.stock.label }}
+        {{ form.stock(class="form-control" ,placeholder="Stock") }}
+      </div>
+      <div class="form-group">
+        {{ form.colors.label }}
+        {{ form.colors(class="form-control" ,placeholder="Colour (seperate by space)") }}
+      </div>
+      <div class="form-group">
+        {{ form.discription.label }}
+        {{ form.discription(class="form-control" ,placeholder="Discription") }}
+      </div>
+      <lebel>Brand</lebel>
+      <select name="brand" id="brand" class="form-control" required>
+      <option value="none"> Select A brand</option>
+                     {% for brand in brands %}
+                     <option value="{{brand.brand_name}}">{{brand.brand_name}}</option>
+                     {% endfor %}
+      </select>
+      <label for="category">Add a category</label>
+                    <select name="category" id="category" class="form-control" required>
+                     <option value="none"> Select A category</option>
+                     {% for category in categories %}
+                     <option value="{{category.catagory_name}}">{{category.catagory_name}}</option>
+                     {% endfor %}
+                    </select>
+    <!--div class="mb-3">
+      <div class="loading">Loading</div>
+      <div class="error-message"></div>
+      <div class="sent-message">Your message has been sent. Thank you!</div>
+    </div-->
+    <div class="form-group">
+        {{ form.image_1.label() }}
+        {{ form.image_1(class="form-control-file") }}
+        {% if form.image_1.errors %}
+            {% for error in form.image_1.errors %}
+                <span class="text-danger">{{ error }}</span></br>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="form-group">
+        {{ form.image_2.label() }}
+        {{ form.image_2(class="form-control-file") }}
+        {% if form.image_2.errors %}
+            {% for error in form.image_2.errors %}
+                <span class="text-danger">{{ error }}</span></br>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="form-group">
+        {{ form.image_3.label() }}
+        {{ form.image_3(class="form-control-file") }}
+        {% if form.image_3.errors %}
+            {% for error in form.image_3.errors %}
+                <span class="text-danger">{{ error }}</span></br>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="form-group">
+    {{ form.submit(style="background-color:#1977cc",class='btn btn-outline-info') }}
+  </div>
+</fieldset>
+  </form>
+
+{% endblock content %}

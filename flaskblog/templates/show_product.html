@@ -1,0 +1,377 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+{% for product in products %}
+
+	<!--div class="col-md-3 mt-4">
+        <div class="card">
+            <img src="{{ url_for('static', filename='product_pics/' + product.image_2) }}" class="card-img-top" alt="{{product.name}}" height="200" width="200">
+            <div class="card-body">
+                {% if product.discount|int > 0 %}
+                <h5 style="text-shadow: 1px 1px 1px #000; color: #f00; transform: rotate(-45deg); position: absolute; top: 10%; left: 10%; font-weight: 600;"> Discount {{product.discount}}</h5>
+                {% endif %}
+              <h5 class="text-center">{{product.name}}</h5>
+              <p class="text-center">Price ${{product.price}}</p>
+            </div>
+            <div class="card-footer">
+                <a href="" class="float-left btn btn-sm btn-primary">Details</a>
+                <form action="" method="post">
+                  <input type="hidden" name="product_id" value="{{product.id}}">
+                  <button type="submit" class="btn btn-sm btn-warning float-right">Add to Cart</button>
+                  <input type="hidden" name="quantity" value="1" min="1" max="20">
+                  {% set colors = product.colors.split(',') %}
+                  <select name="colors" id="colors" style="visibility: hidden;">
+                      {% for color in colors %}
+                      {% set col = color.split(':') %}
+                      <option value="{{col[0]}}">{{col[0] | capitalize }}</option>
+                      {% endfor %}
+                  </select>
+              </form>
+            </div>
+        </div>
+      </div-->
+
+        <div class="col-md-3">
+            <!-- bbb_deals -->
+            <div class="bbb_deals">
+                <div class="ribbon ribbon-top-right"><span><small class="cross">x </small>1</span></div>
+                <div class="bbb_deals_title">{{product.brand}}</div>
+                <div class="bbb_deals_slider_container">
+                    <div class=" bbb_deals_item">
+                        <div class="bbb_deals_image"><img height="200" width="200" src="{{ url_for('static', filename='product_pics/' + product.image_2) }}" alt=""></div>
+                        <div class="bbb_deals_content">
+                            <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
+                                <div class="bbb_deals_item_category"><a href="#">{{product.category}}</a></div>
+                                <div class="bbb_deals_item_price_a ml-auto"><div style="text-align: center;">-{{product.discount}}% </div><strike>$ {{product.price}}</strike></div>
+                            </div>
+                            <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
+                                <div class="bbb_deals_item_name"><a href="{{url_for('main.single_page',id=product.id)}}">{{product.name}}</a></div>
+                                <div class="bbb_deals_item_price ml-auto">${{product.price|int - (product.price|int * product.discount|int)/100}}</div>
+                            </div>
+                            <div class="available">
+                                <div class="available_line d-flex flex-row justify-content-start">
+                                    <div class="available_title">Stock: <span>{{product.stock}}</span>
+
+                                    	<button data-toggle="modal" data-target="#deleteModal-{{product.id}}" class="btn btn-sm btn-outline-primary"><img height="20px" width="20px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAxlBMVEX///8AgAAAfgAAfAAAegAAgQAAgwD8/vwAhQD5/fn2+/YAeADx+PHt9u37/vvo9OiLxYvR5tHi8OLa7NoAiQAWiBbl8uWt063N5c2/3b/a7dqx1LFKnkpFnEXE4cSn0acwkjB0tHQ9mT1bpVtTolOUypSAuYAnkCedzp18vXxosGhzuXNdrV0ojCjW5tY9nD2PwI81nTVUqVSIvIhKo0qu0a4akxphp2GeyZ58t3yf0J89oT0omCjG3caexZ6RvZFuqm5JmEmrxfHaAAAO80lEQVR4nO1daXeqOhTVRBERHBAERHGe0N5atQ4d7nv3//+ph221JJxARNvet1b2p64qITs5OVNOYiYjICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwQllRVbViW6P5avP8sjXkLMZIkg3D2L5sFtWpW9NUVSkWfrqfaaBouv7LWS4ejGyplMvhgFmA7AeOfyOcy5VKpex209u//tIb2v+Ip1q3X//x7w1UyuFPViy8Uc0HPB9fa43yT/c9Gart/h4PTRRwS6IW4Sl1d/88OvWfphAH3V3+2zcRx8QxaGIsTQbjvV38aSYg7NHuz10+LbnQZCKzPzg4fxvJxqh/F/TuSnafLPNm13d+mtQZRX30gHO3YndmiXPGvKb8vIJVGs4me3N6J5L4Ya+rP8qvYi8fcvhL6H2QzBm+o//YRDatnnmhUUgBLA329o9wbC6H8tfze+OYb6+9b+dYG7fy30LvDSjb7bnfaj9q87sYfoGGSEmEbU1R1hx638avvmBbPpTNm/ezzn2a+TU3m4mZZbJEaGN/B72iPs4ypihg1/0zs7SMvkjBL0DL0+zRoG+yBhDnFjXli/mV69MJzC9wttr/Tr0gOFA73bR+qTwO/O5m5zCcMEhi+fC1HBv7NixEgSo4WPbbu5sHOb0Kwm0rUJqFustU1Li7/Lroo+zuwM4jLA9+2x++hzVMTe+tLXmpHZsJSI7hiUTSoPNF09g83EFvxNmHpd34MFfFkXmlDUFST39vS6tbKxlaEsj0v0LlFJ/60JBivHG0s6XSeldI6BmD2kdzBbXm50Fh7Va1WxOsQRYCIXkVHk19cD29Y7P9UKON2RZ6c7Z/2+BK2xtRcUFSt9ckRmF4IyccT8Ld16YtQPSxvK7cjmDNj2pQlG+tm+S3Bjdz4/CWmCG1M5AAjsNbOeSqGzWBgZRQ/G5J8KhMSCGs7AfRFY63nZtMY3McbRtN1vT4VYY3dcTRhPJC9c4wMo+B3r2BUvWG+cjb5Z5NR95F/8aRBupTFAv6HnCn2teGHOVON/JqvPGimYVqZBygXgdRx3v+m4fjsEa9o6jPo2p1srzK/KuziGRgYwqs746ZTA7J2+fFrFqdzRfPRh4l0/QbkffYD1Gd51+RydFfcnRzpq8DX/Tife0guOsuRl44Za+7s3ZcjPn22Bjoe1Soctu0jmrBo+UeSS0LEnt9F9dVJPV9C3JB7GoQQ8Q9aLiAuDR7tHXEWzeVpCruhGop0KDgaClLOY5fa8lUeA2rR7+EeLYPvU+1WtRyROYyhROn7mk/Gw0deKi8uF72l7TCIKA5ca4smoE2vTk2aIrjiy2jNqZkIYhOoRUYQGWbepRPDlg1957t7Mmw96laXZpiL6qW4l/r04IwsVgqy5JY/cMG86Ew6j0mQ3QPm7tCjXby84uLKBY3FL+YJJD6wppCfB8roKEmloDb+fHmJ8YzWpWSbvRwgaBqz6SVCMScPReziEU5jeqcf/l3WIEz6jLWRibj9Mln8JZzQAPlv6JGp99hf7liMPpmji/Rb/TCOkOqMp9pUpIa8WVZqNOZllaceztiEVxf5mpEbNOp2y22Pdd6pHRHfFkY9BqW/GbMt/U+g2GMXDMoMgTV3LOfUZfkuKDYyfhAnSTINhLvmMIOKfYvN8HuFk5U7mI6oFj9SylWyHR1kreg7mCCYb2mOdPq1EtmXOiArhEdDFMPeW1KUBPUTZlUMsjsxFe4OKCCQNLnemjO+nd5ybxrV+OE/Q3qGpbT+BVdIx0GNImVueIqR347IaFVXoNhIToHWMrI+Ah3EJarSe5NswWO13187FAhjTd+ibGLqk8NR5JqqoMOGxqcRFJdhbf4c89JogqHmdJjfMZJ3ZCv3zApqmPC/0LdxJSkA6n4z4VDjVg2t0pwOxrgssa9BL3cGJCi1GOMZHFP6GuUnHMt70GX9HB6wT4iw+OE/J97B7SHHmKXVgDdJ97EsMUFUmuglpOYjaz0oCk8T32zTX+M7hJGTQOz5lLiWNeJyUfmHlryNcKyoDZHbUAN1KRnmQJmGI0TUmOgfcXVxL6QZhxN3OhXSI2Eujz+j2MA3TFPTmwFyG2gdoJF1qFBQ5vk0a4TAoMmkfeUF2GlEG9lTyjuAYLozylOsyGHTn5MaHQOhMPI4AiMmuQie6GXYrUU/li2OAhm1B7Qm/zh9LEDCtzvhEY9MBjjkagmodhz1Lw75ECPeAhmKlDFxacucSEnLJfEUIEkPzfl6Q9pu8hnyBmWkhf2G3TAVUbdsy1KN4eZDSAY2OfqkEVQDK+0ik+0d+AMfGrAcKPV+WMwTSwlrcPMCBBT9MzVoQJh0VHr7AkXl+HRjo1WCDiAvcfz88eQS8eho21I1Wz5ekRmbvO9k4Ii5Be1uLMdFrSv/yn9hTXQ1X8ToygdWr4GZ7ip9cJPSft360tYEg5n9MxgD8hTLqSFATGVYgL2UyehQFjmTRXq4W1MJL8e/6eOwx01Y5JONMM1xDAshWPaL0W75CVefIYcpcTg8gTCNcMPx8CLXE1jboKZ8gFYMbmwL6FR26Y4KQA/orCCFiL30skQmYJcr5xRwtoZDS/IHxUgg58j1JTuh5NhHNHKsdlF0sAlgPCKgqFxwqKGAYeV3RXIwcKkf1VZdj+2B9Bxb5yrWYhh6QKGenht5KoZL9wePiQ38NkVcA4pD7Jo71uGhPLypOfyZd2vnkObGJpORpkTiuaCOtwCuA4jKkGp1BzX9eq86UWQIeZfh1pY1aBt8Nr6lrCG/HnOQhXSpVeXf4Ca5gKG87B2e192DmFi59wbxgXIv8pdspJBgHtZEq+flamGTQM+vLFRx0RbS+4ClQ402Pz2lIEGFFzw+jSk833e86gTfsDE4q0Wc4BkKWZvFXGiDhBEBuewe33YP3PuCKvFq21swINEfHFODBwotnjhe7ZGlJ6Z+3PCvrwkmmtzLus6sHWI2tdWKEM7rniV/FzmmBkingqnTVUyS9Pi83MrD1CMz+1BMgA1muOS/eKcGOt7ggW5k4s2XGKv+YCqMVkb75yoRJsM5pArbzQjCErUUHtkiwseWVOWUBSwu65YsANlomSedUPuRqOIDzwlFeOcxwWHck1EkfbloLb3PtqMpAajKEzJzkSTaUqP+IJ04LBANWhjWlqmYXaCB21cYD/RgBU75CYRtJmjk4pI4iil0KG6YDTg9j+iKPSiDQZNJroRCkkQDcE+kMYEmdVE0VCATMwxTZC+wLwW2cw5wkhahmXyqBVz74BMwyPzkKhuXCglyhhAHsB7yqiVFHdRM9hlbptRRYbSnPG9M2rgtrTE7ffRALc6siip0PmJ3Pg0Y97vkLViKImiegA6FKi+lEW72gEsVTAS3MgOVRUXuwXgUkVGSWUxFrjxjjepTiWxyk3iVVdxRBZTowT/x6J25v346QC1adoIw4YLv+R9XMWLNiaHJT9LeEuhQ5UGD+L1WBUuLpVSBMJ1cFEnbKo2DmQH8klVDUfLQmWqW7EpQBs8k5hciROFxio1jlPp9R5JUOIpFVaoWUTduJVbmDP6denpOQXK3GUTthnoAz1cBI8OEOmMBYYxxpm2WTXQl1FUD6x2fPYURo5UswppIrAo9RtbQw2lxt4GBqqHYKHiswiyxb1QpbqJ+bNoQdBAPTthF9dAkf47RRmsaoFQa7HK9dlZEX1Bn5ZI0qIkRbraX54yBaDKrEJHB640t+Iwr2BAJiNloDiUBxv40ZcQDLwbugGpxzIbOugtvwGv7ORp1JcsKQhey6iZ0Jf0cZDJ6MLIu+C16Je1Lbi3BYt96gVNlgl5m4o7jLnv4x6WHG9HLUHUT3FGv0YXtCNzDPdWA73Tj4ekVhxHzY2c0wo/bIBqRt3TOhS1U90NptNbJCgPH12jIsvIwLRmDNdZnw7iD6+toYmx/cjhtVUtXTSj+iX6neYc9IKt2JsUUH7SrkZumdOsReQoIdVxKNBUR5FBKS3SXz8wiqwwbEyhcWW4p58kMTKe50+2rhSLRVX3nuYvctLVfFBOq+BEDpEi6SIrQcNpR4oN8DOgH6k8FoMlRtnjzZ7S+59JX496DOBB4O6Ve0H1qCZAxjh65K5yq/sUzjD31NqCDnOj/ODqu5W0iOI6esPRY5O1VBcnsSHRqQu9E717C03WVyT2Tih6UZfqaAPo0NhjnQ9KBUypUa0DXarQd29zI5/ei0o/kv+MqOG7JUVEVg+qnUFUWyOckIC4AIobPbYeLIF+lXQ7vZjjrhcSJM6FqU/w5Sb7W16pWJkBnhlC5oyYR5vtoV7Ej1iD2gi6TQllV7e+Z8hpASdZEc4vbPVT59Xhg14XEpycU08FtT4zAMOCsn3uyIwfjTV49gBnV4/1s7hUeswTvdwE+6fNQkV3FxJkONHkcO0+LAynZ4IXU2W74/P9xsVl2svaTq2dDFzDWfbz4PukgftVd0ZrFnTXz1vN2nDpvmc6Cs7gitt2kfxu4DRvvzNBrw6h7v4GNpAJfd9lpMSyk8H4vXJNB67s4URg4ILlpTrrXZdx5zI2x7WvvQSzoM9A0TkObv6u7T/px5vr4q6RYANJh0am6M5bdxLDKcfI//KLEzPHuJEphsdLnO9njkIdeuRE12o+rcx8TOv3zW+6qLXp38Xc74lz2QdmcjAODy8xV7l/7wWmgW0/gDfwfbJMQZB9c+mbvt6lu4QmPbw1rMu/Ase70xg3x3wlCvZ+AF7ceGvgfOuHLoMO9KrTg3yqG/MbPtZ/8GZ2tT4ySl83kahkzOyf/mmPguKspEt/zYKPXg7dd9QfpvcBxVrcxWnCFOxQ9m71dMPLLa+HPt39mdyGZdDI5M9u+pXOZ0o0rfWuL6X+gZIPdljq79bWX/tTLBXvcT2c5NMty8AZQuZw+ej9VcIZhVK3X3/37uXSJTQRxiX0Mlw6r/rf9usrMMqa/ut16T8b+PhTT3HO2PEyzFLJeFlU3V965fvdlqtQVhRVrXWqi+etXDoiF8bbf/LGw2rW8TRVUf4fUxcDrelZ0+onRh2n9pcvNwEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAYG/E/8BdIoXJAO8FOIAAAAASUVORK5CYII=" ></button><hr>
+                                    	<form action="{{url_for('main.AddCart')}}" method="post">
+                  <input type="hidden" name="product_id" value="{{product.id}}">
+                  <button type="submit" class="btn btn-sm btn-warning float-right">Add to cart</button>
+                  <input type="hidden" name="quantity" value="1" min="1" max="20">
+                  {% set colors = product.colors.split() %}
+                  <select name="colors" id="colors" style="visibility: hidden;">
+                      {% for color in colors %}
+                      {% set col = color.split(':') %}
+                      <option value="{{col[0]}}">{{col[0] | capitalize }}</option>
+                      {% endfor %}
+                  </select>
+              </form>
+                                    </div>
+                                    <div class="sold_stars ml-auto"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
+                                </div>
+                                <div class="available_bar"><span style="width:17%"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--modal-->
+
+
+<div class="modal" id="deleteModal-{{product.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="text-danger fa fa-times"></i></button>
+                    <h4 class="modal-title" id="myModalLabel"><i class="text-muted fa fa-shopping-cart"></i> <strong>Ecoknowme</strong></h4>
+                  </div>
+                  <div class="modal-body">
+                  
+                    <table class="pull-left col-md-8 ">
+                         <tbody>
+                             <tr>
+                                 <td class="h6"><strong></strong>Name</td>
+                                 <td> </td>
+                                 <td class="h5">{{product.name}}</td>
+                             </tr>
+                             
+                             <tr>
+                                 <td class="h6"><strong>Brand</strong></td>
+                                 <td> </td>
+                                 <td class="h5">{{product.brand}}</td>
+                             </tr>
+                             
+                             <tr>
+                                 <td class="h6"><strong>Catagory</strong></td>
+                                 <td> </td>
+                                 <td class="h5">{{product.category}}</td>
+                             </tr>
+                             
+                             <tr>
+                                 <td class="h6"><strong>Stock</strong></td>
+                                 <td> </td>
+                                 <td class="h5">{{product.stock}}</td>
+                             </tr>
+                             
+                             <tr>
+                                 <td class="h6"><strong>colour</strong></td>
+                                 <td> </td>
+                                 <td class="h5">{{product.colors}}</td>
+                             </tr>
+                             
+                             <tr>
+                                 <td class="h6"><strong>Discription</strong></td>
+                                 <td> </td>
+                                 <td class="h5">{{product.desc}}</td>
+                             </tr> 
+
+                         </tbody>
+                    </table>
+                             
+                         
+                    <div class="col-md-4"> 
+                        <img src="{{ url_for('static', filename='product_pics/' + product.image_2) }}" alt="teste" class="img-thumbnail">  
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                  </div>
+                    
+                  <div class="modal-footer">       
+                      
+                    <div class="text-right pull-right col-md-3">
+                        <br/> 
+                        <span class="h3 text-muted"><strong> R${{product.price|int - (product.price|int * product.discount|int)/100}} </strong></span> 
+                    </div> 
+                      
+                    <div class="text-right pull-right col-md-3">
+                        price:<br/> 
+                        <span class="h3 text-muted"><strong>   $<strike>{{product.price}}</strike></strong></span>
+                    </div>
+                     
+                </div>
+              </div>
+            </div>
+            </div>
+
+
+{% endfor %}
+    </div>
+<style type="text/css">
+	html,
+body {
+    height: 100%
+}
+
+body {
+    display: grid;
+    background: #fff;
+    font-family: 'Manrope', sans-serif
+}
+
+.mydiv {
+    margin-top: 50px;
+    margin-bottom: 50px
+}
+
+.cross {
+    font-size: 10px
+}
+
+.padding-0 {
+    padding-right: 5px;
+    padding-left: 5px
+}
+
+.img-style {
+    margin-left: -11px;
+    box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    max-width: 104% !important
+}
+
+.m-t-20 {
+    margin-top: 20px
+}
+
+.bbb_background {
+    background-color: #E0E0E0 !important
+}
+
+.ribbon {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    position: absolute
+}
+
+.ribbon span {
+    position: absolute;
+    display: block;
+    width: 34px;
+    border-radius: 50%;
+    padding: 8px 0;
+    background-color: #3498db;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+    color: #fff;
+    font: 100 18px/1 'Lato', sans-serif;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    text-transform: uppercase;
+    text-align: center
+}
+
+.ribbon-top-right {
+    top: -10px;
+    right: -10px
+}
+
+.ribbon-top-right::before,
+.ribbon-top-right::after {
+    border-top-color: transparent;
+    border-right-color: transparent
+}
+
+.ribbon-top-right::before {
+    top: 0;
+    left: 17px
+}
+
+.ribbon-top-right::after {
+    bottom: 17px;
+    right: 0
+}
+
+.sold_stars i {
+    color: orange
+}
+
+.ribbon-top-right span {
+    right: 17px;
+    top: 17px
+}
+
+div {
+    display: block;
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+.bbb_deals_featured {
+    width: 100%
+}
+
+.bbb_deals {
+    width: 100%;
+    margin-right: 7%;
+    padding-top: 80px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 34px;
+    box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-top: 0px
+}
+
+.bbb_deals_title {
+    position: absolute;
+    top: 10px;
+    left: 22px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #000000
+}
+
+.bbb_deals_slider_container {
+    width: 100%
+}
+
+.bbb_deals_item {
+    width: 100% !important
+}
+
+.bbb_deals_image {
+    width: 100%
+}
+
+.bbb_deals_image img {
+    width: 100%
+}
+
+.bbb_deals_content {
+    margin-top: 33px
+}
+
+.bbb_deals_item_category a {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5)
+}
+
+.bbb_deals_item_price_a {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.6)
+}
+
+.bbb_deals_item_price_a strike {
+    color: red
+}
+
+.bbb_deals_item_name {
+    font-size: 24px;
+    font-weight: 400;
+    color: #000000
+}
+
+.bbb_deals_item_price {
+    font-size: 24px;
+    font-weight: 500;
+    color: #6d6e73
+}
+
+.available {
+    margin-top: 19px
+}
+
+.available_title {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 400
+}
+
+.available_title span {
+    font-weight: 700
+}
+
+@media only screen and (max-width: 991px) {
+    .bbb_deals {
+        width: 100%;
+        margin-right: 0px
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .bbb_deals {
+        padding-left: 15px;
+        padding-right: 15px
+    }
+
+    .bbb_deals_title {
+        left: 15px;
+        font-size: 16px
+    }
+
+    .bbb_deals_slider_nav_container {
+        right: 5px
+    }
+
+    .bbb_deals_item_name,
+    .bbb_deals_item_price {
+        font-size: 20px
+    }
+}
+</style>
+
+{% endblock content %}
